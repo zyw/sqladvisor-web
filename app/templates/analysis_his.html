@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}设置{% endblock %}
+{% block content %}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">分析历史列表</h3>
+	  </div>
+	  <div class="panel-body">
+	    <table class="table table-bordered table-striped">
+	    	<colgroup>
+	    		<col class="col-xs-1">
+	    		<col class="col-xs-3">
+	    		<col class="col-xs-1">
+	    		<col class="col-xs-1">
+	    	</colgroup>
+	    	<thead>
+	    		<tr>
+	    			<th>配置名称</th>
+	    			<th>原SQL</th>
+	    			<th>创建时间</th>
+	    			<th>操作</th>
+	    		</tr>
+	    	</thead>
+	    	<tbody>
+	    		{% if analysis_list %}
+	    		{% for analysis in analysis_list%}
+	    		<tr>
+	    			<th scope="row"><code>{{ analysis.dbinfo_name }}</code></th>
+	    			<td>{{ analysis.original_sql }}</td>
+	    			<td>{{ analysis.create_time }}</td>
+	    			<td><a href="#">查看</a></td>
+	    		</tr>
+	    		{% endfor %}
+	    		{% endif %}
+	    	</tbody>
+	    </table>
+	  </div>
+	</div>
+{% endblock %}

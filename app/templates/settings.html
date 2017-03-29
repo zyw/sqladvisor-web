@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block title %}设置{% endblock %}
+{% block content %}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">新增配置</h3>
+	  </div>
+	  <div class="panel-body">
+	    <form class="form-horizontal" action="/settings" method="POST">
+	      <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">配置名称</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" name="itemName" placeholder="配置名称">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">数据库地址</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" name="dbHost" placeholder="数据库地址">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">端口</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" name="dbPort" placeholder="端口" value="3306">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">数据库名</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" name="dbName" placeholder="数据库名">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" name="dbUserName" placeholder="用户名">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+		    <div class="col-sm-10">
+		      <input type="password" class="form-control" name="dbPwd" placeholder="密码">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-default btn-success"><i class="glyphicon glyphicon-ok-sign"></i> 保 存</button>
+		    </div>
+		  </div>
+		</form>
+	  </div>
+	</div>
+
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">配置列表</h3>
+	  </div>
+	  <div class="panel-body">
+	    <table class="table table-bordered table-striped">
+	    	<colgroup>
+	    		<col class="col-xs-1">
+	    		<col class="col-xs-1">
+	    		<col class="col-xs-1">
+	    		<col class="col-xs-1">
+	    		<col class="col-xs-1">
+	    		<col class="col-xs-1">
+	    		<col class="col-xs-1">
+	    	</colgroup>
+	    	<thead>
+	    		<tr>
+	    			<th>配置名称</th>
+	    			<th>数据库地址</th>
+	    			<th>端口</th>
+	    			<th>数据库名</th>
+	    			<th>用户名</th>
+	    			<th>创建时间</th>
+	    			<th>操作</th>
+	    		</tr>
+	    	</thead>
+	    	<tbody>
+	    		{% if dbinfos %}
+	    		{% for dbinfo in dbinfos %}
+	    		<tr>
+	    			<th scope="row">{{dbinfo.item_name}}</th>
+	    			<td>{{dbinfo.db_host}}</td>
+	    			<td>{{dbinfo.db_port}}</td>
+	    			<td>{{dbinfo.db_name}}</td>
+	    			<td>{{dbinfo.db_user}}</td>
+	    			<td>{{dbinfo.create_time}}</td>
+	    			<td>
+	    				<a href="#">编辑</a>&nbsp;&nbsp;
+	    				<a href="#">删除</a>
+	    			</td>
+	    		</tr>
+	    		{% endfor %}
+	    		{% endif %}
+	    	</tbody>
+	    </table>
+	  </div>
+	</div>
+{% endblock %}

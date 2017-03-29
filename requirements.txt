@@ -1,0 +1,9 @@
+sudo pip install flask-bootstrap
+
+sudo pip install flask-script
+
+sudo pip install flask-mysql
+
+Flask-Login==0.4.0
+flask-sqlalchemy==2.2
+flask-migrate==2.0.3
