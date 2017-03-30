@@ -3,7 +3,7 @@
 
 ## 安装依赖
 ```
-pip freeze >requirements.txt
+pip install -r requirements.txt
 ```
 
 ## 恢复数据库
