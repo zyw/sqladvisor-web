@@ -12,4 +12,4 @@ python hello.py db upgrade
 ```
 
 ## 截图
-[analysis](WX20170330-145627.png)
+![analysis](WX20170330-145627.png)
