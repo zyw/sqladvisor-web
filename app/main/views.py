@@ -102,13 +102,21 @@ def logout():
 	flash('You have been logged out.')
 	return redirect(url_for('main.index'))
 
-@main.route("/register")
+@main.route("/register", methods=['POST','GET'])
 def register():
 	if request.method == 'GET':
 		return render_template('register.html')
 
-	
+	user_name = request.form['user_name']
+	email = request.form['email']
+	password = request.form['password']
+	confirm_pwd = request.form['confirm_pwd']
 
+	user = User(username=user_name, password=password, email=email, avatar='', status=1, create_time=datetime.utcnow(), update_time=datetime.utcnow())
 
+	db.session.add(user)
+	db.session.commit()
+
+	return redirect(url_for('main.login'))
 
 

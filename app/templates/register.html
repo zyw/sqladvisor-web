@@ -14,6 +14,8 @@
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
+    <link href="/static/css/bootstrapValidator.min.css" rel="stylesheet">
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="/static/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
@@ -37,7 +39,7 @@
       <div class="jumbotron" style="text-align: center;">
         <h2>用户注册</h2>
       </div>
-      <form class="form-horizontal col-sm-offset-3" action="/register" method="POST">
+      <form class="form-horizontal col-sm-offset-3" id="registerForm" action="/register" method="POST">
         <div class="form-group">
           <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
           <div class="col-sm-5">
@@ -73,30 +75,87 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
     <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrapValidator.min.js"></script>
     <script>
-      // $(function(){
-      //   $("#loginBtn").click(function(){
-      //     var username = $("#username").val();
-      //     var pwd = $("#pwd").val();
-      //     var rememberMe = $("#rememberMe").prop( "checked" );
-      //     $.ajax({
-      //        type: "POST",
-      //        dataType: "json",
-      //        url: "/login",
-      //        data: {username:username,pwd:pwd, rememberMe:rememberMe},
-      //        success: function(result, textStatus, jqXHR){
-      //          if(result.success){
-      //           location.href='/';
-      //          } else {
-      //           console.log(result.message)
-      //          }
-      //        },
-      //        error:function(XMLHttpRequest, textStatus, errorThrown){
-      //          console.log(errorThrown)
-      //        }
-      //     });
-      //   });
-      // });
+      $(function(){
+        $('#registerForm').bootstrapValidator({
+//        live: 'disabled',
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                user_name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The first name is required and cannot be empty'
+                        }
+                    }
+                },
+                user_name: {
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: 'The username is required and cannot be empty'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 30,
+                            message: 'The username must be more than 6 and less than 30 characters long'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
+                            message: 'The username can only consist of alphabetical, number, dot and underscore'
+                        },
+                        different: {
+                            field: 'password',
+                            message: 'The username and password cannot be the same as each other'
+                        }
+                    }
+                },
+                email: {
+                    validators: {
+                        emailAddress: {
+                            message: 'The input is not a valid email address'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The password is required and cannot be empty'
+                        },
+                        identical: {
+                            field: 'confirm_pwd',
+                            message: 'The password and its confirm are not the same'
+                        },
+                        different: {
+                            field: 'user_name',
+                            message: 'The password cannot be the same as username'
+                        }
+                    }
+                },
+                confirm_pwd: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The confirm password is required and cannot be empty'
+                        },
+                        identical: {
+                            field: 'password',
+                            message: 'The password and its confirm are not the same'
+                        },
+                        different: {
+                            field: 'user_name',
+                            message: 'The password cannot be the same as username'
+                        }
+                    }
+                }
+            }
+        });
+      });
     </script>
   </body>
 </html>
