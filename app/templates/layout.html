@@ -53,7 +53,7 @@
         <h2>SQLAdvisor简介</h2>
         <p class="lead">SQLAdvisor是由美团点评公司技术工程部DBA团队（北京）开发维护的一个分析SQL给出索引优化建议的工具。它基于MySQL原生态词法解析，结合分析SQL中的where条件、聚合条件、多表Join关系 给出索引优化建议。目前SQLAdvisor在美团点评内部广泛应用，公司内部对SQLAdvisor的开发全面转到github上，开源和内部使用保持一致。</p>
         {% if current_user.is_authenticated %}
-          <p><a class="btn btn-lg btn-success" href="/login" role="button">退 出</a></p>
+          <p><a class="btn btn-lg btn-success" href="/logout" role="button">退 出</a></p>
         {% else %}
           <p><a class="btn btn-lg btn-success" href="/logout" role="button">登 录</a></p>
         {% endif %}

@@ -1,9 +1,6 @@
-sudo pip install flask-bootstrap
-
-sudo pip install flask-script
-
-sudo pip install flask-mysql
-
+Flask==0.12
+Jinja2==2.9.5
+Flask-Script==2.0.5
 Flask-Login==0.4.0
 flask-sqlalchemy==2.2
 flask-migrate==2.0.3

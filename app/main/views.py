@@ -1,7 +1,7 @@
 #coding=utf-8
-from flask import render_template, redirect, session, request, url_for, jsonify
+from flask import render_template, redirect, session, request, url_for, jsonify, flash
 from datetime import datetime
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from .. import db, login_manager
 from ..models import User, DatabaseInfo, Analysis
 from flask_login import login_required, login_user, current_user
@@ -51,13 +51,13 @@ def analysis_his():
 	return render_template('analysis_his.html',nav='analysis_his',analysis_list = analysis_list)
 
 '''
-设置的路由
+数据库设置
 '''
 @main.route("/settings",methods=['POST','GET'])
 @login_required
 def settings():
 	if request.method == 'GET':
-		dbInfos = DatabaseInfo.query.all()
+		dbInfos = DatabaseInfo.query.filter_by(user_id=current_user.id)
 		return render_template('settings.html',nav='settings',dbinfos=dbInfos)
 
 	itemName = request.form['itemName']
@@ -94,3 +94,21 @@ def login():
 			return jsonify({'code': 10002, 'success': True, 'message': 'login success! '})
 
 		return jsonify({'code': 10001, 'success': False, 'message': 'login failure! '})
+
+@main.route("/logout")
+@login_required
+def logout():
+	logout_user()
+	flash('You have been logged out.')
+	return redirect(url_for('main.index'))
+
+@main.route("/register")
+def register():
+	if request.method == 'GET':
+		return render_template('register.html')
+
+	
+
+
+
+
