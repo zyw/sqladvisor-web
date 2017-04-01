@@ -53,13 +53,14 @@ def analysis_his():
 '''
 数据库设置
 '''
-@main.route("/settings",methods=['POST','GET'])
+@main.route("/settings", methods=['POST','GET'])
 @login_required
 def settings():
 	if request.method == 'GET':
 		dbInfos = DatabaseInfo.query.filter_by(user_id=current_user.id)
 		return render_template('settings.html',nav='settings',dbinfos=dbInfos)
 
+	id = request.form['id']
 	itemName = request.form['itemName']
 	dbHost = request.form['dbHost']
 	dbPort = request.form['dbPort']
@@ -71,11 +72,28 @@ def settings():
 		db_port = dbPort, db_name = dbName, db_user = dbUserName, 
 		db_pwd = dbPwd, create_time = datetime.utcnow(), 
 		update_time = datetime.utcnow())
+	if(id != 0):
+		databaseInfo = DatabaseInfo(id=id, user_id = current_user.id, 
+		item_name = itemName, db_host = dbHost, 
+		db_port = dbPort, db_name = dbName, db_user = dbUserName, 
+		db_pwd = dbPwd,update_time = datetime.utcnow())
 
 	db.session.add(databaseInfo)
 	db.session.commit()
 
 	return redirect(url_for('main.settings'))
+
+'''
+验证配置名称是否重复
+'''
+@main.route('/validate/item/name', methods=['POST'])
+def validate_item_name():
+	valid = True
+	itemName = request.form['itemName']
+	dbinfo_count = DatabaseInfo.query.filter_by(item_name=itemName).count()
+	if(dbinfo_count > 0):
+		valid = False
+	return jsonify({'valid': valid})
 
 @main.route("/login",methods=['POST','GET'])
 def login():

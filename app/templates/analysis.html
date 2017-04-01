@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}分析{% endblock %}
 {% block content %}
-	<form id=“analysisForm”>
+	<form id=“analysisForm” method="POST">
 	<div class="form-group">
 	    <label for="exampleInputEmail1">选择数据库</label>
-	    <select class="form-control" id="dbInfo">
+	    <select class="form-control" id="dbInfo" name="dbInfo">
 	      {% if dbinfos %}
 	      {% for dbinfo in dbinfos %}
 		  <option value="{{dbinfo.id}}">{{dbinfo.item_name}}</option>
@@ -16,37 +16,62 @@
 	    <label for="exampleInputEmail1">SQL语句</label>
 	    <textarea class="form-control" rows="5" name="sqls" id="sqls"></textarea>
 	  </div>
-	  <div class="form-group">
+	  <!-- <div class="form-group">
 	    <label for="exampleInputFile">选择SQL文件</label>
 	    <input type="file" id="exampleInputFile">
-	  </div>
+	  </div> -->
 	  <div class="form-group">
 	    <label for="exampleInputEmail1">分析结果</label>
 	    <textarea class="form-control" rows="13" id="analysisResult" readonly="readonly"></textarea>
 	  </div>
-	  <button type="button" class="btn btn-default btn-primary" id="analysisSubmit"><i class="glyphicon glyphicon-list-alt"></i> 开 始 分 析 </button>
+	  <button type="submit" class="btn btn-default btn-primary"><i class="glyphicon glyphicon-list-alt"></i> 开 始 分 析 </button>
 	</form>
 	
 {% endblock %}
 {% block javascript %}
 	<script type="text/javascript">
 		$(function(){
-			$("#analysisSubmit").click(function(){
-				var sqls = $("#sqls").val();
-				var dbInfoId = $("#dbInfo").val();
-				console.log(sqls)
-				$.ajax({
-				   type: "POST",
-				   dataType: "text",
-				   url: "/analysis",
-				   data: {sqls:sqls, dbInfoId:dbInfoId},
-				   success: function(result, textStatus, jqXHR){
-				     $("#analysisResult").val(result);
-				   },
-				   error:function(XMLHttpRequest, textStatus, errorThrown){
-				   	 console.log(errorThrown)
-				   }
-				});
+			$("#“analysisForm”").bootstrapValidator({
+				message: 'This value is not valid',
+	            feedbackIcons: {
+	                valid: 'glyphicon glyphicon-ok',
+	                invalid: 'glyphicon glyphicon-remove',
+	                validating: 'glyphicon glyphicon-refresh'
+	            },
+	            fields: {
+	            	dbInfo: {
+		                enabled: true,
+		                validators: {
+		                    notEmpty: {
+		                        message: 'The database is required and cannot be empty'
+		                    }
+		                }
+		            },
+	                sqls: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: 'The sqls is required and cannot be empty'
+	                        }
+	                    }
+	                }
+	            },
+	            submitHandler: function (validator, form, submitButton) {
+	                var sqls = $("#sqls").val();
+					var dbInfoId = $("#dbInfo").val();
+					console.log(sqls)
+					$.ajax({
+					   type: "POST",
+					   dataType: "text",
+					   url: "/analysis",
+					   data: {sqls:sqls, dbInfoId:dbInfoId},
+					   success: function(result, textStatus, jqXHR){
+					     $("#analysisResult").val(result);
+					   },
+					   error:function(XMLHttpRequest, textStatus, errorThrown){
+					   	 console.log(errorThrown)
+					   }
+					});
+	            }
 			});
 		});
 	</script>

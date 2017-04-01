@@ -6,46 +6,49 @@
 	    <h3 class="panel-title">新增配置</h3>
 	  </div>
 	  <div class="panel-body">
-	    <form class="form-horizontal" action="/settings" method="POST">
+	    <form class="form-horizontal" id="settingForm" action="/settings" method="POST">
+	    	<input type="hidden" name="id" id="settingsId" value="0">
 	      <div class="form-group">
 		    <label for="inputPassword3" class="col-sm-2 control-label">配置名称</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" name="itemName" placeholder="配置名称">
+		      <input type="text" class="form-control" name="itemName" id="itemName" placeholder="配置名称">
 		    </div>
 		  </div>
 		  <div class="form-group">
 		    <label for="inputPassword3" class="col-sm-2 control-label">数据库地址</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" name="dbHost" placeholder="数据库地址">
+		      <input type="text" class="form-control" name="dbHost" id="dbHost" placeholder="数据库地址">
 		    </div>
 		  </div>
 		  <div class="form-group">
 		    <label for="inputPassword3" class="col-sm-2 control-label">端口</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" name="dbPort" placeholder="端口" value="3306">
+		      <input type="text" class="form-control" name="dbPort" id="dbPort" placeholder="端口" value="3306">
 		    </div>
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-2 control-label">数据库名</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" name="dbName" placeholder="数据库名">
+		      <input type="text" class="form-control" name="dbName" id="dbName" placeholder="数据库名">
 		    </div>
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" name="dbUserName" placeholder="用户名">
+		      <input type="text" class="form-control" name="dbUserName" id="dbUserName" placeholder="用户名">
 		    </div>
 		  </div>
 		  <div class="form-group">
 		    <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
 		    <div class="col-sm-10">
-		      <input type="password" class="form-control" name="dbPwd" placeholder="密码">
+		      <input type="password" class="form-control" name="dbPwd" id="dbPwd" placeholder="密码">
 		    </div>
 		  </div>
 		  <div class="form-group">
 		    <div class="col-sm-offset-2 col-sm-10">
 		      <button type="submit" class="btn btn-default btn-success"><i class="glyphicon glyphicon-ok-sign"></i> 保 存</button>
+		      &nbsp;
+		      <button type="button" class="btn btn-default btn-default" id="clear">清 除</button>
 		    </div>
 		  </div>
 		</form>
@@ -89,7 +92,7 @@
 	    			<td>{{dbinfo.db_user}}</td>
 	    			<td>{{dbinfo.create_time}}</td>
 	    			<td>
-	    				<a href="#">编辑</a>&nbsp;&nbsp;
+	    				<a href="javascript:;" class="edit-settings" data-setting="{{dbinfo.id}}">编辑</a>&nbsp;&nbsp;
 	    				<a href="#">删除</a>
 	    			</td>
 	    		</tr>
@@ -99,4 +102,94 @@
 	    </table>
 	  </div>
 	</div>
+{% endblock %}
+{% block javascript %}
+	<script type="text/javascript">
+		$(function(){
+			$("#settingForm").bootstrapValidator({
+				message: 'This value is not valid',
+	            feedbackIcons: {
+	                valid: 'glyphicon glyphicon-ok',
+	                invalid: 'glyphicon glyphicon-remove',
+	                validating: 'glyphicon glyphicon-refresh'
+	            },
+	            fields: {
+	            	itemName: {
+		                validators: {
+		                    notEmpty: {
+		                        message: 'The setting name is required and cannot be empty'
+		                    },
+		                    remote: {
+		                        url: '/validate/item/name',
+		                        message: 'The itemName is not available'
+		                    }
+		                }
+		            },
+	                dbHost: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: 'The database host is required and cannot be empty'
+	                        }
+	                    }
+	                },
+	                dbPort: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: 'The database port is required and cannot be empty'
+	                        },
+	                        integer: {
+	                            message: 'The database port is not an integer'
+	                        }
+	                    }
+	                },
+	                dbName: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: 'The database name is required and cannot be empty'
+	                        }
+	                    }
+	                },
+	                dbUserName: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: 'The database user name is required and cannot be empty'
+	                        }
+	                    }
+	                },
+	                dbPwd: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: 'The database password is required and cannot be empty'
+	                        }
+	                    }
+	                }
+	            }
+			});
+			$(".edit-settings").click(function(){
+				var settingId = $(this).data("setting");
+				var settingInfo = $(this).parent().siblings();
+				$("#settingsId").val(settingId);
+				$("#itemName").val($(settingInfo.get(0)).text());
+				$("#itemName").attr('readonly','readonly');
+				$("#dbHost").val($(settingInfo.get(1)).text());
+				$("#dbPort").val($(settingInfo.get(2)).text());
+				$("#dbName").val($(settingInfo.get(3)).text());
+				$("#dbUserName").val($(settingInfo.get(4)).text());
+
+				$('#settingForm').data('bootstrapValidator').enableFieldValidators('itemName', false);
+			});
+			$("#clear").click(function(){
+				$("#settingsId").val(0);
+				$("#itemName").val('');
+				$("#itemName").removeAttr('readonly');
+				$("#dbHost").val('');
+				$("#dbPort").val(3306);
+				$("#dbName").val('');
+				$("#dbUserName").val('');
+				$("#dbPwd").val('');
+				
+				$('#settingForm').data('bootstrapValidator').enableFieldValidators('itemName', true);
+			});
+		});
+	</script>
 {% endblock %}

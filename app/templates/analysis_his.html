@@ -28,12 +28,68 @@
 	    			<th scope="row"><code>{{ analysis.dbinfo_name }}</code></th>
 	    			<td>{{ analysis.original_sql }}</td>
 	    			<td>{{ analysis.create_time }}</td>
-	    			<td><a href="#">查看</a></td>
+	    			<td><a href="javascript:;" data-dbinfoid="{{analysis.dbinfo_id}}" class="lookAnalysis">查看</a></td>
 	    		</tr>
 	    		{% endfor %}
 	    		{% endif %}
 	    	</tbody>
 	    </table>
 	  </div>
+	</div> 
+
+	<!-- Modal -->
+	<div class="modal fade bs-example-modal-lg" id="analysisShowModal" tabindex="-1" role="dialog" aria-labelledby="analysisShowModalLabel">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="analysisShowModalLabel">(<span></span>) 分析结果</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form>
+	          <div class="form-group">
+	            <label for="recipient-name" class="control-label">SQL语句:</label>
+	            <input type="text" class="form-control" id="sqls" readonly="readonly">
+	          </div>
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">分析结果:</label>
+	            <textarea class="form-control" rows="13" id="analysisResult" readonly="readonly"></textarea>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">关 闭</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
+{% endblock %}
+{% block javascript %}
+	<script type="text/javascript">
+		$(function(){
+			$(".lookAnalysis").click(function(){
+				var $lookTD = $(this).parent();
+				var itemName = $lookTD.siblings('th').text();
+				var sqls = $lookTD.siblings('td:first').text();
+				var dbinfoId = $(this).data("dbinfoid");
+
+				$("#sqls").val(sqls);
+				$("#analysisShowModalLabel span").text(itemName);
+				
+				$.ajax({
+				   type: "POST",
+				   dataType: "text",
+				   url: "/analysis",
+				   data: {sqls:sqls, dbInfoId:dbinfoId},
+				   success: function(result, textStatus, jqXHR){
+				     $("#analysisResult").val(result);
+				     $('#analysisShowModal').modal('show');
+				   },
+				   error:function(XMLHttpRequest, textStatus, errorThrown){
+				   	 console.log(errorThrown)
+				   }
+				});
+			});
+		});
+	</script>
 {% endblock %}
