@@ -1,4 +1,5 @@
 #coding=utf-8
+import os
 from flask import render_template, redirect, session, request, url_for, jsonify, flash
 from datetime import datetime
 from flask_login import login_user, logout_user
@@ -6,6 +7,8 @@ from .. import db, login_manager
 from ..models import User, DatabaseInfo, Analysis
 from flask_login import login_required, login_user, current_user
 from ..native.sqladvisor import sqladvisor
+
+from config import config
 from . import main
 
 login_manager.login_view = 'main.login'
@@ -24,7 +27,7 @@ def index():
 @login_required
 def analysis():
 	if request.method == 'GET':
-		dbInfos = DatabaseInfo.query.filter_by(user_id = current_user.id)
+		dbInfos = DatabaseInfo.query.filter_by(user_id = current_user.id, status = 1)
 		return render_template('analysis.html',nav='analysis',dbinfos = dbInfos)
 
 	try:
@@ -44,20 +47,22 @@ def analysis():
 '''
 分析历史列表
 '''
-@main.route("/analysis/his", methods=['GET'])
+@main.route("/analysis/his/<page>", methods=['GET'])
 @login_required
-def analysis_his():
-	analysis_list = Analysis.query.filter_by(user_id=current_user.id)
+def analysis_his(page):
+	POSTS_PER_PAGE = config[os.getenv('FLASK_CONFIG') or 'default'].POSTS_PER_PAGE
+	analysis_list = Analysis.query.filter_by(user_id=current_user.id).paginate(int(page),POSTS_PER_PAGE,False)
 	return render_template('analysis_his.html',nav='analysis_his',analysis_list = analysis_list)
 
 '''
 数据库设置
+根据ID完成新增和编辑功能
 '''
 @main.route("/settings", methods=['POST','GET'])
 @login_required
 def settings():
 	if request.method == 'GET':
-		dbInfos = DatabaseInfo.query.filter_by(user_id=current_user.id)
+		dbInfos = DatabaseInfo.query.filter_by(user_id = current_user.id, status = 1)
 		return render_template('settings.html',nav='settings',dbinfos=dbInfos)
 
 	id = request.form['id']
@@ -70,7 +75,7 @@ def settings():
 	databaseInfo = DatabaseInfo(user_id = current_user.id, 
 		item_name = itemName, db_host = dbHost, 
 		db_port = dbPort, db_name = dbName, db_user = dbUserName, 
-		db_pwd = dbPwd, create_time = datetime.utcnow(), 
+		db_pwd = dbPwd, status=1, create_time = datetime.utcnow(), 
 		update_time = datetime.utcnow())
 
 	if(id != '0'):
@@ -88,6 +93,15 @@ def settings():
 
 	return redirect(url_for('main.settings'))
 
+@main.route("/settings/<settings_id>/del", methods=['GET'])
+def settings_del(settings_id):
+	databaseInfo = DatabaseInfo.query.get(settings_id)
+	databaseInfo.status = 0
+
+	db.session.add(databaseInfo)
+	db.session.commit()
+
+	return jsonify({'code': 10003, 'success': True, 'message': 'deleted success! '})
 '''
 验证配置名称是否重复
 '''

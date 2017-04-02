@@ -12,6 +12,7 @@
 		    <label for="inputPassword3" class="col-sm-2 control-label">配置名称</label>
 		    <div class="col-sm-10">
 		      <input type="text" class="form-control" name="itemName" id="itemName" placeholder="配置名称">
+		      <p class="help-block">配置名称一旦创建不能修改。</p>
 		    </div>
 		  </div>
 		  <div class="form-group">
@@ -93,13 +94,32 @@
 	    			<td>{{dbinfo.create_time}}</td>
 	    			<td>
 	    				<a href="javascript:;" class="edit-settings" data-setting="{{dbinfo.id}}">编辑</a>&nbsp;&nbsp;
-	    				<a href="#">删除</a>
+	    				<a href="javascript:;" class="del-settings" data-setting="{{dbinfo.id}}">删除</a>
 	    			</td>
 	    		</tr>
 	    		{% endfor %}
 	    		{% endif %}
 	    	</tbody>
 	    </table>
+	  </div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="deleteSettingsModal" tabindex="-1" role="dialog" aria-labelledby="deleteSettingsModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="deleteSettingsModalLabel">温馨提示</h4>
+	      </div>
+	      <div class="modal-body">
+	        你确定要删除“<span id="modalItemName"></span>”数据库配置吗？
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+	        <button type="button" class="btn btn-primary" id="deleteSettingsBtn" onclick="enterDeleteSettings()">确 定</button>
+	      </div>
+	    </div>
 	  </div>
 	</div>
 {% endblock %}
@@ -180,6 +200,7 @@
 
 				$('#settingForm').data('bootstrapValidator').enableFieldValidators('itemName', false);
 			});
+			/* 清除填写 */
 			$("#clear").click(function(){
 				$('#settingForm').data('bootstrapValidator').resetForm(true);
 				$("#settingsId").val(0);
@@ -188,6 +209,36 @@
 
 				$('#settingForm').data('bootstrapValidator').enableFieldValidators('itemName', true);
 			});
+
+			$(".del-settings").click(function(){
+				var dbInfoId = $(this).data("setting");
+				var itemName = $(this).parent().siblings('th').text();
+				$("#modalItemName").text(itemName);
+				$("#deleteSettingsBtn").data("setting", dbInfoId);
+				$('#deleteSettingsModal').modal('show');
+			});
+
+			window.enterDeleteSettings = function(){
+				var dbInfoId = $("#deleteSettingsBtn").data("setting");
+				console.log(dbInfoId);
+				$('#deleteSettingsModal').modal('hide');
+
+				$.ajax({
+				   type: "GET",
+				   dataType: "json",
+				   url: "/settings/" + dbInfoId + "/del",
+				   success: function(result, textStatus, jqXHR){
+				     if(result.success) {
+				     	location.href="/settings"
+				     } else {
+				     	console.error("删除错误！");
+				     }
+				   },
+				   error:function(XMLHttpRequest, textStatus, errorThrown){
+				   	 console.log(errorThrown);
+				   }
+				});
+			}
 		});
 	</script>
 {% endblock %}

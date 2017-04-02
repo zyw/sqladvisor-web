@@ -23,7 +23,7 @@
 	    	</thead>
 	    	<tbody>
 	    		{% if analysis_list %}
-	    		{% for analysis in analysis_list%}
+	    		{% for analysis in analysis_list.items%}
 	    		<tr>
 	    			<th scope="row"><code>{{ analysis.dbinfo_name }}</code></th>
 	    			<td>{{ analysis.original_sql }}</td>
@@ -34,6 +34,19 @@
 	    		{% endif %}
 	    	</tbody>
 	    </table>
+	    {% if analysis_list %}
+	    <nav aria-label="...">
+		  <ul class="pager">
+		  	{% if analysis_list.has_prev %}
+                <li class="previous"><a href="/analysis/his/{{ analysis_list.prev_num }}"><span aria-hidden="true">&larr;</span> 上一页</a></li>
+            {% endif %} 
+            <li>{{ analysis_list.page }}/{{ analysis_list.pages }}</li>
+		    {% if analysis_list.has_next %}
+		    <li class="next"><a href="/analysis/his/{{ analysis_list.next_num }}">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+		    {% endif %} 
+		  </ul>
+		</nav>
+		{% endif %}
 	  </div>
 	</div> 
 
@@ -75,7 +88,7 @@
 
 				$("#sqls").val(sqls);
 				$("#analysisShowModalLabel span").text(itemName);
-				
+
 				$.ajax({
 				   type: "POST",
 				   dataType: "text",
