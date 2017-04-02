@@ -166,6 +166,8 @@
 	            }
 			});
 			$(".edit-settings").click(function(){
+				$('#settingForm').data('bootstrapValidator').resetForm(true);
+
 				var settingId = $(this).data("setting");
 				var settingInfo = $(this).parent().siblings();
 				$("#settingsId").val(settingId);
@@ -179,15 +181,11 @@
 				$('#settingForm').data('bootstrapValidator').enableFieldValidators('itemName', false);
 			});
 			$("#clear").click(function(){
+				$('#settingForm').data('bootstrapValidator').resetForm(true);
 				$("#settingsId").val(0);
-				$("#itemName").val('');
 				$("#itemName").removeAttr('readonly');
-				$("#dbHost").val('');
 				$("#dbPort").val(3306);
-				$("#dbName").val('');
-				$("#dbUserName").val('');
-				$("#dbPwd").val('');
-				
+
 				$('#settingForm').data('bootstrapValidator').enableFieldValidators('itemName', true);
 			});
 		});

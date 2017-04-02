@@ -72,11 +72,16 @@ def settings():
 		db_port = dbPort, db_name = dbName, db_user = dbUserName, 
 		db_pwd = dbPwd, create_time = datetime.utcnow(), 
 		update_time = datetime.utcnow())
-	if(id != 0):
-		databaseInfo = DatabaseInfo(id=id, user_id = current_user.id, 
-		item_name = itemName, db_host = dbHost, 
-		db_port = dbPort, db_name = dbName, db_user = dbUserName, 
-		db_pwd = dbPwd,update_time = datetime.utcnow())
+
+	if(id != '0'):
+		databaseInfo = DatabaseInfo.query.get(id)
+		databaseInfo.item_name = itemName
+		databaseInfo.db_host = dbHost
+		databaseInfo.db_port = dbPort
+		databaseInfo.db_name = dbName
+		databaseInfo.db_user = dbUserName
+		databaseInfo.db_pwd = dbPwd
+		databaseInfo.update_time = datetime.utcnow()
 
 	db.session.add(databaseInfo)
 	db.session.commit()
