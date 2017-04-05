@@ -8,7 +8,13 @@ pip install -r requirements.txt
 
 ## 恢复数据库
 ```
-python hello.py db upgrade
+python manage.py db upgrade
+```
+
+## 启动系统
+进入sqladvisor-web
+```
+python manage.py runserver --host 0.0.0.0
 ```
 
 ## 截图
