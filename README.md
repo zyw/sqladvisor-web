@@ -1,5 +1,6 @@
 # sqladvisor-web
-美团SQLAdvisor SQL优化建议工具的Web版，告别命令行
+美团SQLAdvisor SQL优化建议工具的Web版，告别命令行。
+该项目在使用Python开发的，使用CentOS自带的Python版本,版本号是2.7.5
 
 ## 安装依赖
 ```
