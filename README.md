@@ -33,7 +33,7 @@ sudo systemctl enable mysqld
 ```
 sudo systemctl mysqld restart
 ```
-进入数据库创建``sqladvisor``
+进入Mysql创建``sqladvisor``数据库
 
 ## 2、配置项目
 ```
@@ -72,14 +72,23 @@ sudo yum install python-devel mysql-community-devel -y
 ```
 sudo pip install -r requirements.txt
 ```
+## 修改数据库配置
+编辑工程中的``config.py``文件
+```
+SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or 'mysql://root:root@localhost/sqladvisor'
+```
+把第二个``root``修改成你安装Mysql时设置的密码。
 
 ## 恢复数据库
 ```
+python manager.py db init
+python manager.py db migrate
 python manage.py db upgrade
 ```
+经过上三条命令，``sqladvisor``数据库中的表已经被创建了。
 
 ## 启动系统
-进入sqladvisor-web
+
 ```
 python manage.py runserver --host 0.0.0.0
 ```
