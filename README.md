@@ -8,7 +8,7 @@
 
 # 系统搭建
 
-## 1、安装git、wget和Mysql
+## 1、安装git、wget、Mysql和pip
 
 ```
 sudo yum install git
@@ -35,6 +35,12 @@ sudo systemctl enable mysqld
 sudo systemctl mysqld restart
 ```
 进入Mysql创建``sqladvisor``数据库
+
+安装pip
+```
+sudo yum -y install epel-release
+sudo yum install python-pip
+```
 
 ## 2、配置项目
 ```
