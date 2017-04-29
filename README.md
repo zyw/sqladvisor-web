@@ -13,6 +13,21 @@
 sudo yum install git
 sudo yum install wget
 ```
+CentOS 7安装Mysql需要先现在Mysql的rpm文件。
+```
+wget http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+rpm -ivh mysql57-community-release-el7-9.noarch.rpm
+sudo yum install mysql-community-server
+```
+配置Mysql
+```
+mysql_secure_installation
+```
+执行上面命令设置root密码。
+```
+sudo systemctl enable mysqld
+```
+设置开机启动。
 
 ## 安装依赖
 ```
