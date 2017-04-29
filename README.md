@@ -29,6 +29,12 @@ sudo systemctl enable mysqld
 ```
 设置开机启动。
 
+重启数据库
+```
+sudo systemctl mysqld restart
+```
+进入数据库创建``sqladvisor``
+
 ## 2、配置项目
 ```
 git clone https://github.com/zyw/sqladvisor-web.git
