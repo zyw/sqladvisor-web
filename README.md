@@ -7,7 +7,7 @@
 
 # 系统搭建
 
-** ## 安装git、wget和Mysql
+* ## 安装git、wget和Mysql
 
 ## 安装依赖
 ```
