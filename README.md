@@ -14,7 +14,7 @@
 sudo yum install git
 sudo yum install wget
 ```
-CentOS 7安装Mysql需要先现在Mysql的rpm文件。
+CentOS 7安装Mysql需要先下载Mysql的rpm文件。
 ```
 wget http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
 rpm -ivh mysql57-community-release-el7-9.noarch.rpm
