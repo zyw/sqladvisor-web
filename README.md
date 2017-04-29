@@ -87,6 +87,7 @@ python manager.py db migrate
 python manage.py db upgrade
 ```
 > 如果``migrations``文件夹已存在，先删除。
+
 经过上三条命令，``sqladvisor``数据库中的表已经被创建了。
 
 ## 启动系统
