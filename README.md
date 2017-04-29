@@ -4,6 +4,7 @@
 * 该项目是使用Python的Flask框架开发的。
 * 使用CentOS自带的Python版本,版本号是2.7.5。
 * 再部署前建议先看一下[美团的分析工具文档](https://github.com/Meituan-Dianping/SQLAdvisor)
+* CentOS所在环境是使用Vagrant虚拟的环境。
 
 # 系统搭建
 
