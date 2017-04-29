@@ -7,7 +7,12 @@
 
 # 系统搭建
 
-* ## 安装git、wget和Mysql
+## 1、安装git、wget和Mysql
+
+```
+sudo yum install git
+sudo yum install wget
+```
 
 ## 安装依赖
 ```
