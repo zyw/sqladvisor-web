@@ -104,7 +104,7 @@ gunicorn manage:app -p manage.pid -b 0.0.0.0:8000 -D
 ```
 上面的命令启动一个监听0.0.0.0:8000 IP和端口的服务，-D是启动一个守护进程
 
-## 截图
+## 3、截图
 ![analysis](screenshot/WX20170330-145627.png)
 ![setting](screenshot/WX20170330-150957.png)
 ![his](screenshot/his.png)
