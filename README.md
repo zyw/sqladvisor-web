@@ -5,6 +5,10 @@
 * 使用CentOS自带的Python版本,版本号是2.7.5。
 * 再部署前建议先看一下[美团的分析工具文档](https://github.com/Meituan-Dianping/SQLAdvisor)
 
+# 系统搭建
+
+> ## 安装git、wget和Mysql
+
 ## 安装依赖
 ```
 pip install -r requirements.txt
