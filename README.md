@@ -29,9 +29,42 @@ sudo systemctl enable mysqld
 ```
 设置开机启动。
 
-## 安装依赖
+## 2、配置项目
 ```
-pip install -r requirements.txt
+git clone https://github.com/zyw/sqladvisor-web.git
+```
+下载项目。
+```
+cd sqladvisor-web
+```
+为了不报下面异常
+```
+root@pts/4 $ pip install MySQL-python
+Collecting MySQL-python
+  Using cached MySQL-python-1.2.5.zip
+    Complete output from command python setup.py egg_info:
+    sh: mysql_config: command not found
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+      File "/tmp/pip-build-kWowP9/MySQL-python/setup.py", line 17, in <module>
+        metadata, options = get_config()
+      File "setup_posix.py", line 43, in get_config
+        libs = mysql_config("libs_r")
+      File "setup_posix.py", line 25, in mysql_config
+        raise EnvironmentError("%s not found" % (mysql_config.path,))
+    EnvironmentError: mysql_config not found
+
+    ----------------------------------------
+Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-build-kWowP9/MySQL-python/
+```
+首先安装
+```
+sudo yum install python-devel mysql-community-devel -y
+```
+
+## 下面安装依赖
+```
+sudo pip install -r requirements.txt
 ```
 
 ## 恢复数据库
