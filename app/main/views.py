@@ -1,4 +1,4 @@
-#coding=utf-8
+#-*- coding=utf-8 -*-
 import os
 from flask import render_template, redirect, session, request, url_for, jsonify, flash
 from datetime import datetime

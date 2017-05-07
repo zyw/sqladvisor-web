@@ -1,3 +1,4 @@
+#-*- coding=utf-8 -*-
 from subprocess import Popen, PIPE
 from ..models import DatabaseInfo
 
