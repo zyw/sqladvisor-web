@@ -100,6 +100,10 @@ python manage.py db upgrade
 
 经过上三条命令，``sqladvisor``数据库中的表已经被创建了。
 
+## 解压sqlparser.tar.gz
+
+解压``sqlparser.tar.gz``到``/usr/local``
+
 ## 启动系统
 
 ```
