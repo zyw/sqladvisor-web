@@ -35,6 +35,10 @@ sudo systemctl enable mysqld
 sudo systemctl mysqld restart
 ```
 进入Mysql创建``sqladvisor``数据库
+```
+CREATE DATABASE IF NOT EXISTS sqladvisor default charset utf8 COLLATE utf8_general_ci;
+```
+一定要设置charset为utf8和COLLATE为utf8_general_ci，否则无法保存中文。
 
 安装pip
 ```
@@ -88,8 +92,8 @@ SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or 'mysql://root:ro
 
 ## 恢复数据库
 ```
-python manager.py db init
-python manager.py db migrate
+python manage.py db init
+python manage.py db migrate
 python manage.py db upgrade
 ```
 > 如果``migrations``文件夹已存在，先删除。
@@ -101,6 +105,8 @@ python manage.py db upgrade
 ```
 python manage.py runserver --host 0.0.0.0
 ```
+启动完成后访问``http://127.0.0.1:5000/``
+
 ## 部署sqladvisor-web
 使用上面的命令是在开发环境启动Python Web应用，如果想要供多人使用还是使用```gunicorn```部署比较好。
 * 安装```gunicorn```
