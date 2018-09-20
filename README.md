@@ -127,3 +127,7 @@ gunicorn manage:app -p manage.pid -b 0.0.0.0:8000 -D
 ![analysis](screenshot/WX20170330-145627.png)
 ![setting](screenshot/WX20170330-150957.png)
 ![his](screenshot/his.png)
+
+## 提供一个vagrant镜像
+需要的可以下下载
+链接: https://pan.baidu.com/s/1qB1RcDFnkVWuOxrupnNh4g 提取码: mqsa
